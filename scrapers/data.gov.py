@@ -131,11 +131,10 @@ async def fetch_page(page_number: int = 1) -> list:
         # retry this page after pause
         return await fetch_page(page_number)
 
-def save_dataset_to_json(datasets, premature=True):
+def save_dataset_to_json(datasets):
     with open("data_gov_datasets.json", "w", encoding="utf-8") as file:
         json.dump(datasets, file, indent=4, ensure_ascii=False)
-    if premature:
-        print(f"Datasets saved to data_gov_datasets.json | Total datasets: {len(datasets):,}")
+    print(f"Datasets saved to data_gov_datasets.json | Total datasets: {len(datasets):,}")
 
 
 
@@ -154,7 +153,7 @@ async def main():
         print(f"Progress: {len(pg_datasets):,} of {total_to_be_scrapped:,}{' ' * 50}", end="\r", flush=True)
 
     print(f"\nTotal datasets scrapped: {len(pg_datasets):,} | Time taken: {time.time() - start:.2f} seconds{' ' * 50}")
-    save_dataset_to_json(pg_datasets, premature=False)
+    save_dataset_to_json(pg_datasets)
 
     # close the client session
     await CLIENT.aclose()
